@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}
+
+.array-bar {
+  background-color: blue;
+  width: 2px;
+  display: inline-block;
+  margin: 0 1px
+}
+
+.button-container {
+  text-align: center;
+}
+
+.btn {
+  padding: 0 0.25rem;
+  margin: 0 0.25rem;
+}
