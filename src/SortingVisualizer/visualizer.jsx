@@ -4,7 +4,7 @@ import { getBubbleBars }  from '../SortingAlgorithms/sortingAlgos'
 
 // Change this value for the speed of the animations.
 const ITTERATION_SPEED = 2;
-const COUNT_OF_BARS = 50;
+const COUNT_OF_BARS = 100;
 const PRIMARY_COLOR = 'mediumspringgreen';
 const SECONDARY_COLOR = 'purple';
 
@@ -24,22 +24,22 @@ const Visualizer = () => {
   const quickSort = () => {
 
   };
-
-  // Need to fix trailing unsorted bar
-
-  const bubbleSort = () => {
-    const bars = getBubbleBars(array);
+  
+  const bubbleSort = () => { 
+    const [bars, newArray] = getBubbleBars(array);
     for (let i = 0; i < bars.length; i++) {
       const arrayBars = document.getElementsByClassName("array-bar");
-      const isColorChange = i % 3 !== 2;
-      if (isColorChange) {
+      const changeColor = i % 3 !== 2;
+      if (changeColor) {
         const [barOneIdx, barTwoIdx] = bars[i];
         const color = i % 3 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
         setTimeout(() => {
           const barOneStyle = arrayBars[barOneIdx].style;
-          const barTwoStyle = arrayBars[barTwoIdx].style;
           barOneStyle.backgroundColor = color;
-          barTwoStyle.backgroundColor = color;
+          const barTwo = arrayBars[barTwoIdx]
+          if (barTwo) {
+            arrayBars[barTwoIdx].style.backgroundColor = color;
+          }
         }, i * ITTERATION_SPEED);
       } else {
           setTimeout(() => {
@@ -49,7 +49,14 @@ const Visualizer = () => {
           }, i * ITTERATION_SPEED);
       }
     }
+    console.log(bars)
   };
+
+  const checkSort = (array) => {
+    const [bars, myArray] = getBubbleBars(array);
+    const javascriptArray = array.sort(function(a, b){return a-b})
+    console.log(myArray === javascriptArray)
+  }
 
   const resetArray = () => {
     const array = [];

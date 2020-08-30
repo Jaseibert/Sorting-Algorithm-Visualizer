@@ -1,7 +1,7 @@
 export const getBubbleBars = array => {
   let bars = [];
-  bubbleSort(array, bars)
-  return bars
+  let newArray = bubbleSort(array, bars)
+  return [bars, newArray]
 }
 
 export const mergeSort = array => {
@@ -22,7 +22,7 @@ export const bubbleSort = (array, bars) => {
   let counter = 0;
   while (!isSorted) {
     isSorted = true;
-    for (let i = 0; i < array.length - 1 - counter; i++) {
+    for (let i = 0; i < array.length - counter; i++) {
       bars.push([i, i + 1])
       bars.push([i, i + 1])
       if (array[i] > array[i + 1]) {
@@ -31,6 +31,7 @@ export const bubbleSort = (array, bars) => {
         bars.push([i, array[i + 1]])
       } else {
         bars.push([i, array[i]])
+        isSorted = false;
       }
     } 
     counter++;
