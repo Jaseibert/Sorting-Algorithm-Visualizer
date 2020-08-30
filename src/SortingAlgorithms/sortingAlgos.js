@@ -1,7 +1,17 @@
-export const getBubbleBars = array => {
+
+// Apply a Sorting Algorithm
+export const applySort = (array, type) => {
   let bars = [];
-  let newArray = bubbleSort(array, bars)
-  return [bars, newArray]
+  switch (type) {
+    case 'bubble':
+      bubbleSort(array, bars);
+      return bars;
+    case 'quick':
+      quickSort(array, bars);
+      return bars;
+    default:
+      break
+  }
 }
 
 export const mergeSort = array => {
@@ -15,24 +25,62 @@ export const mergeSort = array => {
   mergeSort(leftHalf)
 }
 
-export const quickSort = array => {}
+// Quick Sort Algorithm
+export const quickSort = (array, bars) =>  {
+	quickSortHelper(array, 0, array.length - 1, bars);
+	return array;
+}
 
+// Quick Sort Helper
+//Still need to fix colors
+const quickSortHelper = (array, startIdx, endIdx, bars) => {
+	if (startIdx >= endIdx) return;
+	const pivotIdx = startIdx;
+	let leftIdx = startIdx + 1;
+  let rightIdx = endIdx;
+  bars.push([leftIdx, rightIdx, pivotIdx]);
+	while (rightIdx >= leftIdx) {
+    bars.push([leftIdx, rightIdx]);
+		if (array[leftIdx] > array[pivotIdx] && array[rightIdx] < array[pivotIdx]) {
+      bars.push([leftIdx, array[rightIdx], rightIdx, array[leftIdx]]);
+      swap(leftIdx, rightIdx, array)
+		} else {
+      bars.push([leftIdx, array[leftIdx], rightIdx, array[rightIdx]]);
+    }
+		if (array[leftIdx] <= array[pivotIdx]) leftIdx++;
+    if (array[rightIdx] >= array[pivotIdx]) rightIdx--;
+    bars.push([leftIdx, rightIdx]);
+  }
+  swap(pivotIdx, rightIdx, array);
+  bars.push([pivotIdx, array[pivotIdx], rightIdx, array[rightIdx]]);
+  bars.push([leftIdx, rightIdx]);
+	const leftSubarrayIsSmaller = rightIdx - 1 - startIdx < endIdx - (rightIdx + 1);
+	if (leftSubarrayIsSmaller) {
+		quickSortHelper(array, startIdx, rightIdx - 1, bars);
+		quickSortHelper(array, rightIdx + 1, endIdx, bars);
+	} else {
+		quickSortHelper(array, rightIdx + 1, endIdx, bars);
+		quickSortHelper(array, startIdx, rightIdx - 1, bars);
+  }
+}
+
+// Bubble Sort Algorithm
 export const bubbleSort = (array, bars) => {
-  let isSorted = false;
   let counter = 0;
-  while (!isSorted) {
-    isSorted = true;
+  let isSortedArray = false;
+  while (!isSortedArray) {
+    isSortedArray = true;
     for (let i = 0; i < array.length - counter; i++) {
       bars.push([i, i + 1])
-      bars.push([i, i + 1])
       if (array[i] > array[i + 1]) {
+        bars.push([i, array[i + 1], i + 1, array[i]]);
         swap(i, i+1, array);
-        isSorted = false;
-        bars.push([i, array[i + 1]])
+        isSortedArray = false;
       } else {
-        bars.push([i, array[i]])
-        isSorted = false;
+        bars.push([i, array[i], i + 1, array[i + 1]]);
+        isSortedArray = false;
       }
+      bars.push([i, i + 1]);
     } 
     counter++;
   }
